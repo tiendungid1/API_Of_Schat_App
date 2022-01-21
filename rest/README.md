@@ -4,10 +4,10 @@
 
 ## User login API
 
-- Method: POST
-- Route: /users/login
-- Base path: api
-- Full URL example: http://localhost:8443/api/users/login
+-   Method: POST
+-   Route: /users/login
+-   Base path: api
+-   Full URL example: http://localhost:8443/api/users/login
 
 ### Request body (required)
 
@@ -105,10 +105,10 @@ _Failed operation: Wrong password format_
 
 ## Reset password API
 
-- Method: PATCH
-- Route: /users/reset-password
-- Base path: api
-- Full URL example: http://localhost:8443/api/users/reset-password
+-   Method: PATCH
+-   Route: /users/reset-password
+-   Base path: api
+-   Full URL example: http://localhost:8443/api/users/reset-password
 
 ### Request body (required)
 
