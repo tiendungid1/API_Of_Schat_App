@@ -41,11 +41,11 @@ const socket = io();
 
 -   So, emit the **Search users and groups** event first to get the user information, and then emit the **Create new private group chat** event.
 
-**If you have any ideas to improve this, send those ideas to our chat group :D**
+> If you have any ideas to improve this, send those ideas to our chat group :D
 
 3. To create new 3G, similar to creating new 2G, first get information of members by emitting the **Search users and groups** event, then emit **Create new group chat** event.
 
-_The difference here is you need to create a new 3G before start group messaging, while if you want to message in private with someone, just find he/she and send message directly._
+> The difference here is you need to create a new 3G before start group messaging, while if you want to message in private with someone, just find he/she and send message directly.
 
 4. To search for users or groups or both, emit the **Search users and groups** event.
 
@@ -66,8 +66,8 @@ _The difference here is you need to create a new 3G before start group messaging
 
 `accessToken: String (with prefix Bearer)`
 
-If you save all the information of user to local storage (with key 'user'), then the _accessToken_ may be like this:
-`Bearer ${JSON.parse(localStorage.getItem('user')).accessToken}`.
+If you save all the information of user to local storage (with key _'user'_), then the _accessToken_ may be like this:
+`Bearer ${JSON.parse(localStorage.getItem('user')).accessToken}`
 
 **On**
 
@@ -84,7 +84,7 @@ socket.on('authentication:errorWhenValidatingUser', error => {
 
 `socket.emit('online', email);`
 
-`email: String`
+`email: String (User email)`
 
 ### Get all conversations data:
 
@@ -102,7 +102,7 @@ socket.on('conversations:errorWhenGettingAll', error => {
 });
 ```
 
-_Note_: You should have some ways to save this data to use later. Check **Help** section for my way.
+> You should have some ways to save this data to use later. Check **Help** section for my way.
 
 ### Group messaging:
 
@@ -229,7 +229,7 @@ socket.on('conversations:errorWhenCreatingNewGroup', error => {
 `socket.emit('users-and-conversations:searching', infoWantToSearch, searchTerm);`
 
 ```
-infoWantToSearch: String (Choose 1 of 'user', 'room', 'all')
+infoWantToSearch: String (Choose one of 'user', 'room', 'all')
 searchTerm: String
 ```
 
