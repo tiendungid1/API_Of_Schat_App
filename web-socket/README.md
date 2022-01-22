@@ -45,7 +45,7 @@ const socket = io();
 
 3. To create new 3G, similar to creating new 2G, first get information of members by emitting the **Search users and groups** event, then emit **Create new group chat** event.
 
-> The difference here is you need to create a new 3G before start group messaging, while if you want to message in private with someone, just find he/she and send message directly.
+> The difference here is you need to create a new 3G before start group messaging, while if you want to message in private with someone, just find him/her and send message directly.
 
 4. To search for users or groups or both, emit the **Search users and groups** event.
 
