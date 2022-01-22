@@ -201,7 +201,7 @@ socket.on('conversations:errorWhenPrivateMessaging', error => {
 ```
 dto {
     name: String (Group name),
-    members: Array<String> (User ids),
+    members: Array<String> (Member ids, include the creator),
     createdBy: String (Email of the creator)
 }
 ```
@@ -245,6 +245,246 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
     // Your code
     ...
 });
+```
+
+---
+
+## Resources
+
+### Sample conversations data of user (sent from server)
+
+```
+[
+    {
+        "name": "Team BE",
+        "id": "61eaa47b70021f3e5ef37e15",
+        "members": [
+            {
+                "name": "Tien Dung",
+                "email": "tiendung@gmail.com"
+            },
+            {
+                "name": "Duc Huy",
+                "email": "duchuy@gmail.com"
+            },
+            {
+                "name": "Tuan Hung",
+                "email": "tuanhung@gmail.com"
+            }
+        ],
+        "messages": [
+            {
+                "sender": "Duc Huy",
+                "content": "5gst0acbn4h",
+                "createdAt": "2022-01-21T12:18:03.278Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "0g4d6blxfi6q",
+                "createdAt": "2022-01-21T12:18:03.278Z"
+            },
+            {
+                "sender": "Tuan Hung",
+                "content": "0fm48kdstvza",
+                "createdAt": "2022-01-21T12:18:03.278Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "xx0wuvx6mcj",
+                "createdAt": "2022-01-21T12:18:03.279Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "iq0xpgc51dg",
+                "createdAt": "2022-01-21T12:18:03.279Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "f4aye39ywr5",
+                "createdAt": "2022-01-21T12:18:03.280Z"
+            },
+            {
+                "sender": "Tuan Hung",
+                "content": "hqn9p9vmuaw",
+                "createdAt": "2022-01-21T12:18:03.280Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "75657i723o",
+                "createdAt": "2022-01-21T12:18:03.281Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "dzw4k48hok9",
+                "createdAt": "2022-01-21T12:18:03.281Z"
+            },
+            {
+                "sender": "Tuan Hung",
+                "content": "920zby5hsr",
+                "createdAt": "2022-01-21T12:18:03.281Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "pg0zkum8rkg",
+                "createdAt": "2022-01-21T12:18:03.282Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "b48h1gmd8g",
+                "createdAt": "2022-01-21T12:18:03.283Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "v0xy9a4tihc",
+                "createdAt": "2022-01-21T12:18:03.283Z"
+            }
+        ],
+        "pinMessages": []
+    },
+    {
+        "name": "Team Find Bug",
+        "id": "61eaa47b70021f3e5ef37e16",
+        "members": [
+            {
+                "name": "Tien Dung",
+                "email": "tiendung@gmail.com"
+            },
+            {
+                "name": "Duc Huy",
+                "email": "duchuy@gmail.com"
+            },
+            {
+                "name": "Minh Dong",
+                "email": "minhdong@gmail.com"
+            }
+        ],
+        "messages": [
+            {
+                "sender": "Tien Dung",
+                "content": "22l0zn5ekwy",
+                "createdAt": "2022-01-21T12:18:03.276Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "9rlx37ba9zo",
+                "createdAt": "2022-01-21T12:18:03.277Z"
+            },
+            {
+                "sender": "Minh Dong",
+                "content": "gtl41gwiogn",
+                "createdAt": "2022-01-21T12:18:03.277Z"
+            },
+            {
+                "sender": "Minh Dong",
+                "content": "5o8xpntggnn",
+                "createdAt": "2022-01-21T12:18:03.277Z"
+            },
+            {
+                "sender": "Minh Dong",
+                "content": "t0dy9m1trcc",
+                "createdAt": "2022-01-21T12:18:03.278Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "pixcuoqnihq",
+                "createdAt": "2022-01-21T12:18:03.282Z"
+            },
+            {
+                "sender": "Minh Dong",
+                "content": "kz0s9n4r7a",
+                "createdAt": "2022-01-21T12:18:03.282Z"
+            },
+            {
+                "sender": "Duc Huy",
+                "content": "l42nyw9lech",
+                "createdAt": "2022-01-21T12:18:03.283Z"
+            }
+        ],
+        "pinMessages": []
+    },
+    {
+        "name": "Team FE",
+        "id": "61eaa47b70021f3e5ef37e17",
+        "members": [
+            {
+                "name": "Tien Dung",
+                "email": "tiendung@gmail.com"
+            },
+            {
+                "name": "Minh Dong",
+                "email": "minhdong@gmail.com"
+            },
+            {
+                "name": "Tran Thi Hien",
+                "email": "hientran@gmail.com"
+            }
+        ],
+        "messages": [
+            {
+                "sender": "Tran Thi Hien",
+                "content": "nfw81pwfbkd",
+                "createdAt": "2022-01-21T12:18:03.275Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "1uzawijk3d5",
+                "createdAt": "2022-01-21T12:18:03.278Z"
+            },
+            {
+                "sender": "Tran Thi Hien",
+                "content": "1stkfugwqju",
+                "createdAt": "2022-01-21T12:18:03.279Z"
+            },
+            {
+                "sender": "Minh Dong",
+                "content": "8nll2yqf6tv",
+                "createdAt": "2022-01-21T12:18:03.279Z"
+            },
+            {
+                "sender": "Tran Thi Hien",
+                "content": "oqn2u9a59hb",
+                "createdAt": "2022-01-21T12:18:03.280Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "ph78jyj1t0g",
+                "createdAt": "2022-01-21T12:18:03.281Z"
+            },
+            {
+                "sender": "Tran Thi Hien",
+                "content": "haeou0bpzsh",
+                "createdAt": "2022-01-21T12:18:03.282Z"
+            },
+            {
+                "sender": "Tien Dung",
+                "content": "z560cbse0y",
+                "createdAt": "2022-01-21T12:18:03.282Z"
+            },
+            {
+                "sender": "Minh Dong",
+                "content": "785yvnff9wl",
+                "createdAt": "2022-01-21T12:18:03.284Z"
+            }
+        ],
+        "pinMessages": []
+    }
+]
+```
+
+### Sample new message data (sent from server)
+
+```
+{
+    "deletedAt": null,
+    "room": "61eaa47b70021f3e5ef37e15",
+    "sender": "Tien Dung",
+    "content": "tin nhan moi",
+    "_id": "61ebd7f66f8864dbd021b76d",
+    "reaction": [],
+    "createdAt": "2022-01-22T10:09:58.340Z",
+    "updatedAt": "2022-01-22T10:09:58.340Z",
+    "__v": 0
+}
 ```
 
 ---
