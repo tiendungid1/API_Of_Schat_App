@@ -553,7 +553,6 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
         "deletedAt": null,
         "email": "hientran@gmail.com",
         "name": "Tran Thi Hien",
-        "password": "$2b$10$Ir0/wv1jzLRwRbag/r1j5.E0OtQLQJRdwCelu8GuVhpUYLOALoEkG",
         "rooms": [
             "61ebf85dd0491e2b8980ff71",
             "61ebf8cb14d5fdcf31e9bb5d"
@@ -590,7 +589,6 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
             "deletedAt": null,
             "email": "tiendung@gmail.com",
             "name": "Tien Dung",
-            "password": "$2b$10$Ir0/wv1jzLRwRbag/r1j5.E0OtQLQJRdwCelu8GuVhpUYLOALoEkG",
             "rooms": [
                 "61ebf85dd0491e2b8980ff6f",
                 "61ebf85dd0491e2b8980ff70",
