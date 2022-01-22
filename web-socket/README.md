@@ -549,17 +549,9 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 
 [
     {
-        "_id": "61ebf85dd0491e2b8980ff76",
-        "deletedAt": null,
+        "id": "61ebf85dd0491e2b8980ff76",
         "email": "hientran@gmail.com",
         "name": "Tran Thi Hien",
-        "rooms": [
-            "61ebf85dd0491e2b8980ff71",
-            "61ebf8cb14d5fdcf31e9bb5d"
-        ],
-        "__v": 0,
-        "createdAt": "2022-01-22T12:28:13.031Z",
-        "updatedAt": "2022-01-22T12:30:03.776Z"
     }
 ]
 ```
@@ -585,19 +577,9 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 {
     "users": [
         {
-            "_id": "61ebf85dd0491e2b8980ff72",
-            "deletedAt": null,
+            "id": "61ebf85dd0491e2b8980ff72",
             "email": "tiendung@gmail.com",
             "name": "Tien Dung",
-            "rooms": [
-                "61ebf85dd0491e2b8980ff6f",
-                "61ebf85dd0491e2b8980ff70",
-                "61ebf85dd0491e2b8980ff71",
-                "61ebf8cb14d5fdcf31e9bb5d"
-            ],
-            "__v": 0,
-            "createdAt": "2022-01-22T12:28:13.029Z",
-            "updatedAt": "2022-01-22T12:30:03.776Z"
         }
     ],
     "rooms": []
