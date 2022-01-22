@@ -481,15 +481,13 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 
 ```
 {
-    "deletedAt": null,
+    "messageId": "61ebd7f66f8864dbd021b76d",
     "room": "61eaa47b70021f3e5ef37e15",
     "sender": "Tien Dung",
     "content": "tin nhan moi",
-    "_id": "61ebd7f66f8864dbd021b76d",
     "reaction": [],
+    "reply": "...", // This key will not appear, unless this message is a reply of another message
     "createdAt": "2022-01-22T10:09:58.340Z",
-    "updatedAt": "2022-01-22T10:09:58.340Z",
-    "__v": 0
 }
 ```
 
