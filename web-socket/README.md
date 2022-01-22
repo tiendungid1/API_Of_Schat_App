@@ -6,8 +6,6 @@
 
 Check for _standalone build_ or _CDN (ver 4.4.0)_ at https://socket.io/docs/v4/client-installation/
 
----
-
 ## Instructions
 
 ### Abbreviation:
@@ -48,8 +46,6 @@ const socket = io();
 > The difference here is you need to create a new 3G before start group messaging, while if you want to message in private with someone, just find him/her and send message directly.
 
 4. To search for users or groups or both, emit the **Search users and groups** event.
-
----
 
 ## Socket events
 
@@ -102,6 +98,8 @@ socket.on('conversations:errorWhenGettingAll', error => {
 });
 ```
 
+> Check the **Resources** section for sample dto.
+
 > You should have some ways to save this data to use later. Check **Help** section for my way.
 
 ### Group messaging:
@@ -133,6 +131,8 @@ socket.on('conversations:errorWhenGroupMessaging', error => {
 });
 ```
 
+> Check the **Resources** section for sample dto.
+
 ### Private messaging:
 
 **Emit**
@@ -161,6 +161,8 @@ socket.on('conversations:errorWhenPrivateMessaging', error => {
     ...
 });
 ```
+
+> Check the **Resources** section for sample dto.
 
 ### Create new private group chat:
 
@@ -192,6 +194,8 @@ socket.on('conversations:errorWhenPrivateMessaging', error => {
 });
 ```
 
+> Check the **Resources** section for sample dto.
+
 ### Create new group chat:
 
 **Emit**
@@ -222,6 +226,8 @@ socket.on('conversations:errorWhenCreatingNewGroup', error => {
 });
 ```
 
+> Check the **Resources** section for sample dto.
+
 ### Search users and groups:
 
 **Emit**
@@ -247,11 +253,11 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 });
 ```
 
----
+> Check the **Resources** section for sample dto.
 
 ## Resources
 
-### Sample conversations data of user (sent from server)
+### Sample all conversations data of user
 
 ```
 [
@@ -471,7 +477,7 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 ]
 ```
 
-### Sample new message data (sent from server)
+### Sample new message data
 
 ```
 {
@@ -487,6 +493,117 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 }
 ```
 
----
+### Sample new 2G data
+
+```
+{
+    "name": "0arkf",
+    "id": "61ebf7aae845716c199ca170",
+    "members": [
+        {
+            "name": "Tien Dung",
+            "email": "tiendung@gmail.com"
+        },
+        {
+            "name": "Minh Dong",
+            "email": "minhdong@gmail.com"
+        }
+    ],
+    "messages": [
+        {
+            "sender": "Tien Dung",
+            "content": "e cu",
+            "createdAt": "2022-01-22T12:25:14.849Z"
+        }
+    ]
+}
+```
+
+### Sample new 3G data
+
+```
+{
+    "name": "Team Nhay",
+    "id": "61ebf8cb14d5fdcf31e9bb5d",
+    "members": [
+        {
+            "name": "Tien Dung",
+            "email": "tiendung@gmail.com"
+        },
+        {
+            "name": "Tuan Hung",
+            "email": "tuanhung@gmail.com"
+        },
+        {
+            "name": "Tran Thi Hien",
+            "email": "hientran@gmail.com"
+        }
+    ]
+}
+```
+
+### Sample search users data
+
+```
+// Search term: 'hien'
+
+[
+    {
+        "_id": "61ebf85dd0491e2b8980ff76",
+        "deletedAt": null,
+        "email": "hientran@gmail.com",
+        "name": "Tran Thi Hien",
+        "password": "$2b$10$Ir0/wv1jzLRwRbag/r1j5.E0OtQLQJRdwCelu8GuVhpUYLOALoEkG",
+        "rooms": [
+            "61ebf85dd0491e2b8980ff71",
+            "61ebf8cb14d5fdcf31e9bb5d"
+        ],
+        "__v": 0,
+        "createdAt": "2022-01-22T12:28:13.031Z",
+        "updatedAt": "2022-01-22T12:30:03.776Z"
+    }
+]
+```
+
+### Sample search group data
+
+```
+// Search term: 'team'
+
+[
+    "61ebf8cb14d5fdcf31e9bb5d",
+    "61ebf85dd0491e2b8980ff71",
+    "61ebf85dd0491e2b8980ff6f",
+    "61ebf85dd0491e2b8980ff70"
+]
+```
+
+### Sample search all data
+
+```
+// Search term: 'tien'
+
+{
+    "users": [
+        {
+            "_id": "61ebf85dd0491e2b8980ff72",
+            "deletedAt": null,
+            "email": "tiendung@gmail.com",
+            "name": "Tien Dung",
+            "password": "$2b$10$Ir0/wv1jzLRwRbag/r1j5.E0OtQLQJRdwCelu8GuVhpUYLOALoEkG",
+            "rooms": [
+                "61ebf85dd0491e2b8980ff6f",
+                "61ebf85dd0491e2b8980ff70",
+                "61ebf85dd0491e2b8980ff71",
+                "61ebf8cb14d5fdcf31e9bb5d"
+            ],
+            "__v": 0,
+            "createdAt": "2022-01-22T12:28:13.029Z",
+            "updatedAt": "2022-01-22T12:30:03.776Z"
+        }
+    ],
+    "rooms": []
+}
+```
 
 ## Help
