@@ -440,7 +440,7 @@ socket.on('event:deleteGroup', response => {
 
 ## Dependent events
 
-Client will emit these events only when certain server emit certain events.
+Client will emit these events only when server emit certain events.
 
 ### Join new socket room:
 
