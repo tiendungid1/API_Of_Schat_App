@@ -23,11 +23,19 @@ const socket = io();
 
 2. Emit the **User authentication** event and send the access token to the server.
 
-3. If the authentication is successful, emit the **Online** event and send the email of user to the server.
+3. If the authentication is successful, server will emit the **Get all conversations data** event and send data to client.
 
-4. To get all the conversations of user, emit the **Get all conversations data** event.
+4. Listen to all other web socket events in the list below:
 
-5. After completing 4 steps above, listen to all other web socket events in the list below (from **Group messaging** to **Search users and groups**).
+-   Group messaging
+-   Private messaging
+-   Start new private chat
+-   Create new group chat
+-   Search users and groups
+-   Search messages
+-   Update group name
+-   Leave group
+-   Delete group
 
 ### The other events
 
@@ -39,7 +47,7 @@ const socket = io();
 
 -   So, emit the **Search users and groups** event first to get the user information, and then emit the **Create new private group chat** event.
 
-> If you have any ideas to improve this, send those ideas to our chat group :D
+> If you have any ideas to improve this, send those to our chat group :D
 
 3. To create new 3G, similar to creating new 2G, first get information of members by emitting the **Search users and groups** event, then emit **Create new group chat** event.
 
@@ -47,58 +55,65 @@ const socket = io();
 
 4. To search for users or groups or both, emit the **Search users and groups** event.
 
-## Socket events
-
-### Terms
-
--   Emit: Send event and data to the server.
--   On: Listen to event and data sent from the server.
+## Events
 
 ### User authentication:
 
 **Emit**
 
-`socket.emit('authentication:validatingUser', accessToken);`
+`socket.emit('event:authenticateUser', accessToken);`
 
 `accessToken: String (with prefix Bearer)`
 
 If you save all the information of user to local storage (with key _'user'_), then the _accessToken_ may be like this:
-`Bearer ${JSON.parse(localStorage.getItem('user')).accessToken}`
+
+```
+Bearer ${JSON.parse(localStorage.getItem('user')).accessToken}
+```
 
 **On**
 
 ```
-socket.on('authentication:errorWhenValidatingUser', error => {
+socket.on('event:authenticateUser', response => {
     // Your code
     ...
 });
 ```
 
-### Online:
-
-**Emit**
-
-`socket.emit('online', email);`
-
-`email: String (User email)`
+> Check **Error response** section (bullet 1) for error.
 
 ### Get all conversations data:
 
 **On**
 
 ```
-socket.on('conversations:gettingAll', dto => {
-    // Your code
-    ...
-});
-
-socket.on('conversations:errorWhenGettingAll', error => {
+socket.on('event:getAllConversations', response => {
     // Your code
     ...
 });
 ```
 
-> Check the **Resources** section for sample dto.
+> Check **Error response** section (bullet 3) for error.
+
+> If this user is not in any groups, response will be like this:
+
+```
+{
+    success: true,
+    data: {
+        msg: 'This user is not in any conversations',
+    }
+}
+```
+
+> If ok:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
 
 > You should have some ways to save this data to use later. Check **Help** section for my way.
 
@@ -106,44 +121,13 @@ socket.on('conversations:errorWhenGettingAll', error => {
 
 **Emit**
 
-`socket.emit('conversations:groupMessaging', dto);`
-
-```
-dto {
-    roomId: String,
-    room: String,
-    sender: String,
-    content: String
-}
-```
-
-**On**
-
-```
-socket.on('conversations:groupMessaging', dto => {
-    // Your code
-    ...
-});
-
-socket.on('conversations:errorWhenGroupMessaging', error => {
-    // Your code
-    ...
-});
-```
-
-> Check the **Resources** section for sample dto.
-
-### Private messaging:
-
-**Emit**
-
-`socket.emit('conversations:privateMessaging', dto);`
+`socket.emit('event:groupMessaging', dto);`
 
 ```
 dto {
     roomId: String (The room id),
     room: String (The room name),
-    sender: String (Username),
+    senderEmail: String (Email of user),
     content: String (The text message)
 }
 ```
@@ -151,29 +135,34 @@ dto {
 **On**
 
 ```
-socket.on('conversations:privateMessaging', dto => {
-    // Your code
-    ...
-});
-
-socket.on('conversations:errorWhenPrivateMessaging', error => {
+socket.on('event:groupMessaging', response => {
     // Your code
     ...
 });
 ```
 
-> Check the **Resources** section for sample dto.
+> Check **Error response** section (bullet 2, 4, 5, 6) for error.
 
-### Create new private group chat:
+> If ok:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+### Private messaging:
 
 **Emit**
 
-`socket.emit('conversations:privateMessaging', dto);`
+`socket.emit('event:privateMessaging', dto);`
 
 ```
 dto {
-    sender: String (User email),
-    receiver: String (User email),
+    roomId: String (The room id),
+    room: String (The room name),
+    senderEmail: String (Email of user),
     content: String (The text message)
 }
 ```
@@ -181,58 +170,102 @@ dto {
 **On**
 
 ```
-socket.on('conversations:privateMessaging', dto => {
-    // Emit this event
-    socket.emit('socketRoom:join', dto.name);
-
+socket.on('event:privateMessaging', response => {
     // Your code
-    ...
-});
-
-socket.on('conversations:errorWhenPrivateMessaging', error => {
     ...
 });
 ```
 
-> Check the **Resources** section for sample dto.
+> Check **Error response** section (bullet 2, 4, 5, 6) for error.
+
+> If ok:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+### Start new private chat:
+
+**Emit**
+
+`socket.emit('event:privateMessaging', dto);`
+
+```
+dto {
+    senderEmail: String (User email),
+    receiverEmail: String (User email),
+    content: String (The text message)
+}
+```
+
+**On**
+
+```
+socket.on('event:privateMessaging', response => {
+    // If response is valid, remember to emit the "Join new socket room" event in dependent events section
+    ...
+
+    // Your code
+    ...
+});
+```
+
+> Check **Error response** section (bullet 4, 6) for error.
+
+> Valid response:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
 
 ### Create new group chat:
 
 **Emit**
 
-`socket.emit('conversations:creatingNewGroup', dto);`
+`socket.emit('event:createNewGroup', dto);`
 
 ```
 dto {
     name: String (Group name),
-    members: Array<String> (Member ids, include the creator),
-    createdBy: String (Email of the creator)
+    memberEmails: Array<String> (Email of members, include the creator),
+    senderEmail: String (Email of the creator)
 }
 ```
 
 **On**
 
 ```
-socket.on('conversations:creatingNewGroup', dto => {
-    // Emit this event
-    socket.emit('socketRoom:join', dto.name);
+socket.on('event:createNewGroup', response => {
+    // If response is valid, remember to emit the "Join new socket room" event in dependent events section
+    ...
 
     // Your code
     ...
 });
-
-socket.on('conversations:errorWhenCreatingNewGroup', error => {
-    ...
-});
 ```
 
-> Check the **Resources** section for sample dto.
+> Check **Error response** section (bullet 4, 6) for error.
 
-### Search users and groups:
+> Valid response:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+### Search users and groups: (this event has not been fixed yet, do not implement it)
 
 **Emit**
 
-`socket.emit('users-and-conversations:searching', infoWantToSearch, searchTerm);`
+`socket.emit('event:searchUsersAndGroups', infoWantToSearch, searchTerm);`
 
 ```
 infoWantToSearch: String (Choose one of 'user', 'room', 'all')
@@ -254,6 +287,291 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
 ```
 
 > Check the **Resources** section for sample dto.
+
+### Search messages
+
+**Emit**
+
+```
+socket.emit('event:searchMessages', dto);
+```
+
+```
+dto {
+    term: String (Search term),
+    roomId: String (The room id),
+    senderEmail: String (User email)
+}
+```
+
+**On**
+
+```
+socket.on('event:searchMessages', response => {
+    // Your code
+    ...
+});
+```
+
+> Check **Error response** section (bullet 4, 8) for error.
+
+> Valid response:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+### Update group name
+
+**Emit**
+
+```
+socket.emit('event:updateGroupName', dto);
+```
+
+```
+dto {
+    newName: String (New group name),
+    roomId: String (The room id),
+    senderEmail: String (User email)
+}
+```
+
+**On**
+
+```
+socket.on('event:updateGroupName', response => {
+    // If response is valid, remember to emit the "Rejoin socket room" event in dependent events section
+    ...
+
+    // Your code
+    ...
+});
+```
+
+> Check **Error response** section (bullet 4, 9) for error.
+
+> Valid response:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+### Leave group
+
+**Emit**
+
+```
+socket.emit('event:leaveGroup', dto);
+```
+
+```
+dto {
+    room: String (Group name),
+    roomId: String (The room id),
+    senderEmail: String (User email)
+}
+```
+
+**On**
+
+```
+socket.on('event:leaveGroup', response => {
+    // Your code
+    ...
+});
+```
+
+> Check **Error response** section (bullet 4, 10) for error.
+
+> Valid response:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+### Delete group
+
+**Emit**
+
+```
+socket.emit('event:deleteGroup', dto);
+```
+
+```
+dto {
+    room: String (Group name),
+    roomId: String (The room id),
+    senderEmail: String (User email)
+}
+```
+
+**On**
+
+```
+socket.on('event:deleteGroup', response => {
+    // If response is valid, remember to emit the "Leave deleted group" event in dependent events section
+    ...
+
+    // Your code
+    ...
+});
+```
+
+> Check **Error response** section (bullet 4, 10, 11) for error.
+
+> Valid response:
+
+```
+{
+    success: true,
+    data: ..., // Check the Resources section for sample data
+}
+```
+
+## Dependent events
+
+Client will emit these events only when certain server emit certain events.
+
+### Join new socket room:
+
+**Emit**
+
+```
+socket.emit('event:joinNewSocketRoom', dto);
+```
+
+```
+dto {
+    roomId: String (The room id),
+    room: String (The room name),
+}
+```
+
+**On**
+
+```
+socket.on('event:joinNewSocketRoom', response => {
+    // Your code
+    ...
+});
+```
+
+> Error response:
+
+```
+{
+    success: false,
+    msg: 'You can not join non-existent room',
+    code: 'BAD_REQUEST',
+    status: 400
+}
+```
+
+> Valid response:
+
+```
+{
+    success: true,
+}
+```
+
+### Rejoin socket room:
+
+**Emit**
+
+```
+socket.emit('event:rejoinSocketRoom', dto);
+```
+
+```
+dto {
+    roomId: String (The room id),
+    oldRoom: String (The room name),
+    newRoom: String (The room name),
+}
+```
+
+**On**
+
+```
+socket.on('event:rejoinSocketRoom', response => {
+    // Your code
+    ...
+});
+```
+
+> Error response:
+
+```
+{
+    success: false,
+    msg: 'You can not join non-existent room',
+    code: 'BAD_REQUEST',
+    status: 400
+}
+```
+
+> Valid response:
+
+```
+{
+    success: true,
+}
+```
+
+### Leave deleted group
+
+**Emit**
+
+```
+socket.emit('event:leaveDeletedGroup', dto);
+```
+
+```
+dto {
+    roomId: String (The room id),
+    room: String (The room name),
+    senderEmail: String (User email)
+}
+```
+
+**On**
+
+```
+socket.on('event:leaveDeletedGroup', response => {
+    // Your code
+    ...
+});
+```
+
+> Error response: Below + bullet 4, 10 in **Error response** section
+
+```
+{
+    success: false,
+    msg: 'You can not join non-existent room',
+    code: 'BAD_REQUEST',
+    status: 400
+}
+```
+
+> Valid response:
+
+```
+{
+    success: true,
+}
+```
 
 ## Resources
 
@@ -581,6 +899,223 @@ socket.on('users-and-conversations:errorWhenSearching', error => {
         }
     ],
     "rooms": []
+}
+```
+
+## Error response
+
+1. Authenticate user failed:
+
+```
+{
+    success: false,
+    msg: 'Your access token is not valid',
+    code: 'UNAUTHORIZED',
+    status: 401
+}
+```
+
+2. All events will have these errors if the dto send to server have problem:
+
+```
+When empty dto {
+    success: false,
+    msg: 'Empty data transfer object',
+    code: 'BAD_REQUEST',
+    status: 400
+}
+
+When missing properties {
+    success: false,
+    msg: 'Missing properties in data object',
+    code: 'BAD_REQUEST',
+    status: 400,
+    missingProperties: [...]
+}
+
+When wrong email format {
+    success: false,
+    msg: 'Bad request',
+    code: 'BAD_REQUEST',
+    status: 400,
+    emailErrors: [...]
+}
+
+When values is not string {
+    success: false,
+    msg: 'Some values of properties in data transfer object is not string',
+    code: 'BAD_REQUEST',
+    status: 400,
+    nonStringValues: [...]
+}
+```
+
+3. Server get error while getting user's groups chat and messages of groups from database:
+
+```
+{
+    success: false,
+    msg: "Getting internal error when trying to get user's chat groups",
+    code: 'INTERNAL',
+    status: 500
+}
+
+{
+    success: false,
+    msg: "Getting internal error when trying to get messages of chat groups",
+    code: 'INTERNAL',
+    status: 500
+}
+```
+
+4. The email sent to server is not existed, or server get error while getting user information:
+
+```
+{
+    success: false,
+    msg: 'This account does not exist',
+    code: 'BAD_REQUEST',
+    status: 400,
+}
+
+{
+    success: false,
+    msg: 'Getting internal error while getting user information',
+    code: 'INTERNAL',
+    status: 500,
+}
+```
+
+5. When user try to send message to the group that is not his/her:
+
+```
+{
+    success: false,
+    msg: 'You do not have permission to send message to this chat group',
+    code: 'FORBIDDEN',
+    status: 403,
+}
+```
+
+6. Server get error while creating new message or new group in database:
+
+```
+{
+    success: false,
+    msg: 'Getting internal error while trying to create new document',
+    code: 'INTERNAL',
+    status: 500,
+}
+```
+
+7. Server get error while searching for users or groups:
+
+```
+{
+    success: false,
+    msg: 'Getting internal error while trying to search for users',
+    code: 'INTERNAL',
+    status: 500,
+}
+
+{
+    success: false,
+    msg: 'Getting internal error while trying to search for groups',
+    code: 'INTERNAL',
+    status: 500,
+}
+```
+
+8. Error when user search messages in group:
+
+```
+{
+    success: false,
+    msg: 'You do not have permission to search messages in this chat group',
+    code: 'FORBIDDEN',
+    status: 403,
+}
+
+{
+    success: false,
+    msg: 'Getting internal error while trying to search for messages',
+    code: 'INTERNAL',
+    status: 500,
+}
+```
+
+9. Error when user change group name:
+
+```
+{
+    success: false,
+    msg: 'You do not have permission to change the name of this chat group',
+    code: 'FORBIDDEN',
+    status: 403,
+}
+
+{
+    success: false,
+    msg: 'Getting internal error while trying to update group name',
+    code: 'INTERNAL',
+    status: 500,
+}
+```
+
+10. Error when user leave group:
+
+```
+{
+    success: false,
+    msg: 'You can not leave this group when you still are its admin',
+    code: 'BAD_REQUEST',
+    status: 400,
+}
+
+{
+    success: false,
+    msg: 'You do not have permission to leave this group',
+    code: 'FORBIDDEN',
+    status: 403,
+}
+
+{
+    success: false,
+    msg: "Getting internal error while trying to update user's group chat",
+    code: 'INTERNAL',
+    status: 500,
+}
+
+{
+    success: false,
+    msg: 'Getting internal error while trying to delete member from group',
+    code: 'INTERNAL',
+    status: 500,
+}
+```
+
+11. Error when user delete group:
+
+```
+{
+    success: false,
+    msg: 'You do not have permission to delete this group',
+    code: 'FORBIDDEN',
+    status: 403,
+}
+
+{
+    success: false,
+    msg: 'Getting internal error while trying to delete room',
+    code: 'INTERNAL',
+    status: 500,
+}
+
+{
+    success: false,
+    msg: "Getting internal error while trying to update user's group chat",
+    code: 'INTERNAL',
+    status: 500,
 }
 ```
 
