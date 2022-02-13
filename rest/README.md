@@ -175,3 +175,68 @@ _Failed operation: Wrong password format_
     status: 400
 }
 ```
+
+## Upload image API
+
+-   Method: POST
+-   Route: /media/upload-img
+-   Base path: api
+-   Full URL example: http://localhost:8443/api/media/upload-img
+
+### Request body (required)
+
+```
+{
+    image: File,
+}
+```
+
+> The Bearer token is also required in Header Authorization.
+
+_Example request body_
+
+```
+{
+    image: ...,
+}
+```
+
+### Response
+
+_Successful operation_
+
+```
+{
+    url: String,
+}
+```
+
+_Example response data_
+
+```
+{
+    url: "https://res.cloudinary.com/rungxanu/image/upload/v1644585258/schat_images/_klinh209_132191551_102264695054775_1450368113853276453_n.jpg.jpg",
+}
+```
+
+### Errors
+
+_Failed operation: No file to upload_
+
+```
+{
+    code: "BAD_REQUEST",
+    message: "No file to upload",
+    status: 400
+}
+```
+
+_Failed operation: Internal_
+
+```
+{
+    message: "Getting internal error while uploading image"
+    code: "INTERNAL",
+    status: 500
+}
+```
